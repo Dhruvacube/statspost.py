@@ -15,7 +15,8 @@ SUPPORTED_BOTLISTS = Literal[
     "discordlistspace", 
     "discordbotsgg",
     "discordlabs",
-    "discord-botlist.eu"
+    "discord-botlist.eu",
+    "yabl"
 ]
 
 @final
@@ -152,4 +153,16 @@ class StatusPost(BaseHTTP):
                 }
             )
             return_dict.update({"discord-botlist.eu": data})
+
+        #yabl
+        if self.botlist_data.get("yabl"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://yabl.xyz/api/bot/{self.bot_id}/stats",
+                api_token=self.botlist_data["yabl"],
+                json={
+                    "guildCount": self.servers
+                }
+            )
+            return_dict.update({"yabl": data})
                     
