@@ -34,6 +34,7 @@ class BaseHTTP:
 
         headers["Authorization"] = api_token if bots is not MISSING or bots is not MISSING else f"Bot {api_token}" if bot else f"Bots {api_token}"
         headers["User-Agent"] = self.__user_agent
+        headers["Content-Type"] = "application/json"
 
         async with aiohttp.ClientSession() as session:
             async with session.request(str(method.name).upper(), __base_url, headers=headers, json=json) as response:

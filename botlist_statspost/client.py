@@ -8,7 +8,13 @@ from .enums import RequestTypes
 from .errors import NoBotListData
 from .http import BaseHTTP
 
-SUPPORTED_BOTLISTS = Literal["topgg", "discordbotlist"]
+SUPPORTED_BOTLISTS = Literal[
+    "topgg", 
+    "discordbotlist", 
+    "bladelist", 
+    "discordlistspace", 
+    "discordbotsgg"
+]
 
 @final
 class StatusPost(BaseHTTP):
@@ -18,6 +24,7 @@ class StatusPost(BaseHTTP):
     retry_times: int = 10
 
     def __init__(self) -> None:
+        self.bot_id = self.botclass.id
         self.servers = len(self.botclass.guilds)
         self.shards: Mapping[int, ShardInfo] = self.botclass.shards if isinstance(self.botclass, AutoShardedClient) or isinstance(self.botclass, commands.AutoShardedBot) else MISSING
         self.shards_length: Union[Mapping[int, ShardInfo], int] = len(self.shards) if self.shards is not MISSING else 1
@@ -80,3 +87,43 @@ class StatusPost(BaseHTTP):
                 }
             )
             return_dict.update({"discordbotlist": data})
+        
+        #bladelist
+        if self.botlist_data.get("bladelist"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://api.bladelist.gg/bots/{self.bot_id}/",
+                api_token=f'Token self.botlist_data["bladelist"]',
+                json={
+                    "server_count": self.servers,
+                    "shard_count": self.users,
+                }
+            )
+            return_dict.update({"bladelist": data})
+        
+        #discordlistspace
+        if self.botlist_data.get("discordlistspace"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://api.discordlist.space//bots/v2/bots/{self.bot_id}",
+                api_token=self.botlist_data["discordlistspace"],
+                json={
+                    "serverCount": self.servers,
+                }
+            )
+            return_dict.update({"discordlistspace": data})
+        
+        #discordbotsgg
+        if self.botlist_data.get("discordbotsgg"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://discord.bots.gg/api/v1/bots/{self.bot_id}/stats",
+                api_token=self.botlist_data["discordbotsgg"],
+                json={
+                    "guildCount": self.servers,
+                    "shardCount": self.shards_length,
+                }
+            )
+            return_dict.update({"discordbotsgg": data})
+        
+                    
