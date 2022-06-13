@@ -1,4 +1,7 @@
-from typing import Dict, Literal, Mapping, Optional, final, overload
+from typing import Dict, Literal, Mapping, Optional, Union, final, overload
+
+from discord import AutoShardedClient, Client, ShardInfo
+from discord.ext import commands
 
 from ._type import MISSING
 from .enums import RequestTypes
@@ -9,15 +12,17 @@ SUPPORTED_BOTLISTS = Literal["topgg", "discordbotlist"]
 
 @final
 class StatusPost(BaseHTTP):
-    bot_id: int
+    botclass: Union[Client, AutoShardedClient, commands.Bot, commands.AutoShardedBot]
     botlist_data: Mapping[SUPPORTED_BOTLISTS, str] = MISSING
     retry: bool = True
     retry_times: int = 10
 
-    def __init__(self,servers: int, shards: int = 1, users: int = MISSING) -> None:
-        self.servers = servers
-        self.shards = shards
-        self.users = users
+    def __init__(self) -> None:
+        self.servers = len(self.botclass.guilds)
+        self.shards: Mapping[int, ShardInfo] = self.botclass.shards if isinstance(self.botclass, AutoShardedClient) or isinstance(self.botclass, commands.AutoShardedBot) else MISSING
+        self.shards_length: Union[Mapping[int, ShardInfo], int] = len(self.shards) if self.shards is not MISSING else 1
+        self.users = len(self.botclass.users)
+        self.voice = len(self.botclass.voice_clients)
 
     def __str__(self) -> str:
         return '<StatusPost servers={} shards={} users={}>'.format(self.servers, self.shards, self.users)
@@ -57,8 +62,21 @@ class StatusPost(BaseHTTP):
                 api_token=self.botlist_data["topgg"],
                 json={
                     "server_count": self.servers,
-                    "shard_count": self.shards,
+                    "shard_count": self.shards_length,
                 }
             )
             return_dict.update({"topgg": data})
 
+        #discordbotlist
+        if self.botlist_data.get("discordbotlist"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://discordbotlist.com/api/v1/bots/{self.bot_id}/stats",
+                api_token=self.botlist_data["discordbotlist"],
+                json={
+                    "guilds": self.servers,
+                    "users": self.users,
+                    "voice_connections": self.voice,
+                }
+            )
+            return_dict.update({"discordbotlist": data})
