@@ -22,7 +22,7 @@ SUPPORTED_BOTLISTS = Literal[
 ]
 
 @final
-class StatusPost(BaseHTTP):
+class StatsPost(BaseHTTP):
     botclass: Union['Client', 'AutoShardedClient', 'commands.Bot', 'commands.AutoShardedBot'] = MISSING #type: ignore
     botlist_data: Mapping[SUPPORTED_BOTLISTS, str] = MISSING
     retry: bool = True

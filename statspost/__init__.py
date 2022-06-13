@@ -1,7 +1,7 @@
-__title__ = 'botlist_statspost'
+__title__ = 'statspost'
 __author__ = 'Dhruva Shaw'
 __license__ = 'MIT'
-__copyright__ = 'Copyright 2021-present Dhruvacube'
+__copyright__ = 'Copyright 2022-present Dhruvacube'
 __version__ = '1.0.0a'
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)
 

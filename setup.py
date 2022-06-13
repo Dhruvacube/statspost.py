@@ -2,7 +2,7 @@ import re
 
 from setuptools import setup
 
-pakage_name = 'botlist_statspost'
+pakage_name = 'statspost'
 requirements = []
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
