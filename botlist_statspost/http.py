@@ -1,6 +1,6 @@
 import asyncio
 import io
-from typing import Union
+from typing import Union, Dict
 from ._type import MISSING
 
 import aiohttp
@@ -21,16 +21,18 @@ class BaseHTTP:
         api_token: str,
         json: dict = MISSING,
         headers: dict = MISSING,
+        bot: bool = MISSING,
+        bots: bool = MISSING,
         retry: bool = True,
         retry_times: int = 1
-    ) -> Union[aiohttp.ClientResponse, dict, io.IOBase]:
+    ) -> Union[aiohttp.ClientResponse, Dict, io.IOBase]:
         """Makes an API request"""
         if json is MISSING:
             json = {}
         __base_url: str = _base_url if _base_url.endswith('/') else _base_url.strip() + '/'
         headers = {} if headers is MISSING else headers
 
-        headers["Authorization"] = api_token
+        headers["Authorization"] = api_token if bots is not MISSING or bots is not MISSING else f"Bot {api_token}" if bot else f"Bots {api_token}"
         headers["User-Agent"] = self.__user_agent
 
         async with aiohttp.ClientSession() as session:

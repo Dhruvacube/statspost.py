@@ -1,4 +1,4 @@
-from typing import Literal, Mapping
+from typing import Dict, Literal, Mapping, Optional, final, overload
 
 from ._type import MISSING
 from .enums import RequestTypes
@@ -7,7 +7,9 @@ from .http import BaseHTTP
 
 SUPPORTED_BOTLISTS = Literal["topgg", "discordbotlist"]
 
+@final
 class StatusPost(BaseHTTP):
+    bot_id: int
     botlist_data: Mapping[SUPPORTED_BOTLISTS, str] = MISSING
     retry: bool = True
     retry_times: int = 10
@@ -33,12 +35,30 @@ class StatusPost(BaseHTTP):
         """        
         self.botlist_data[botlist] = token
     
-    async def post_stats(self):
+    @overload
+    async def post_stats(self, return_post_data: Optional[bool] = None) -> Dict:
+        ...
+    
+    @overload
+    async def post_stats(self, return_post_data: MISSING) -> None:
+        ...
+
+    async def post_stats(self, return_post_data):
         if len(self.botlist_data) <= 0:
             raise NoBotListData("No botlist data provided")
-        
+
+        return_dict = {}
+
+        #topgg
         if self.botlist_data.get("topgg"):
-            await self.request(
-                method=RequestTypes.POST, 
-                _base_url=""
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://top.gg/api/bots/{self.bot_id}/stats",
+                api_token=self.botlist_data["topgg"],
+                json={
+                    "server_count": self.servers,
+                    "shard_count": self.shards,
+                }
             )
+            return_dict.update({"topgg": data})
+
