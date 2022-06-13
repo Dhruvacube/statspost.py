@@ -1,7 +1,8 @@
-from setuptools import setup
 import re
 
-pakage_name = 'fluxpoint'
+from setuptools import setup
+
+pakage_name = 'botlist_statspost'
 requirements = []
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
@@ -51,27 +52,26 @@ extras_require = {
 
 packages = [
     pakage_name,
-    f'{pakage_name}.paths'
 ]
 
 setup(
-    name='fluxpoint.py',
+    name=f'{pakage_name}.py',
     author='Dhruva Shaw',
-    url='https://github.com/The-4th-Hokage/fluxpoint',
+    url='https://github.com/The-4th-Hokage/botlist-statspost',
     project_urls={
         "Documentation": "https://bluedocs.page/fluxpoint-api",
-        "Issue tracker": "https://github.com/The-4th-Hokage/fluxpoint/issues",
+        "Issue tracker": "https://github.com/The-4th-Hokage/botlist-statspost/issues",
     },
     version=version,
     packages=packages,
-    license='GNU GENERAL PUBLIC LICENSE',
+    license='MIT',
     description='A Python wrapper for the Fluxpoint API',
     long_description=readme,
     long_description_content_type="text/x-rst",
     include_package_data=True,
     install_requires=requirements,
     extras_require=extras_require,
-    package_data={"fluxpoint": ["py.typed"]},
+    package_data={pakage_name: ["py.typed"]},
     python_requires='>=3.8',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
