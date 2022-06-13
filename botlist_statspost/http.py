@@ -11,9 +11,6 @@ from .errors import *
 
 
 class BaseHTTP:
-    def __init__(self) -> None:
-        self.__user_agent: str = f"botlist_statspost/{__version__}"
-
     async def request(
         self,
         method: RequestTypes,
@@ -33,7 +30,7 @@ class BaseHTTP:
         headers = {} if headers is MISSING else headers
 
         headers["Authorization"] = api_token if bots is not MISSING or bots is not MISSING else f"Bot {api_token}" if bot else f"Bots {api_token}"
-        headers["User-Agent"] = self.__user_agent
+        headers["User-Agent"] = f"botlist_statspost/{__version__}"   
         headers["Content-Type"] = "application/json"
 
         async with aiohttp.ClientSession() as session:
@@ -53,12 +50,12 @@ class BaseHTTP:
 
                 result = await response.json()
                 if response.status == 400:
-                    raise ParameterError(result["message"])
+                    raise ParameterError(result)
 
                 if response.status == 401:
-                    raise Unauthorised(result["message"])
+                    raise Unauthorised(result)
 
                 if response.status == 500:
-                    raise ApiError(result["message"])
+                    raise ApiError(result)
 
                 raise HttpException(response.status, result)

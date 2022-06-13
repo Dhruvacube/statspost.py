@@ -23,26 +23,28 @@ SUPPORTED_BOTLISTS = Literal[
 
 @final
 class StatusPost(BaseHTTP):
-    botclass: Union[Client, AutoShardedClient, commands.Bot, commands.AutoShardedBot] = MISSING #type: ignore
+    botclass: Union['Client', 'AutoShardedClient', 'commands.Bot', 'commands.AutoShardedBot'] = MISSING #type: ignore
     botlist_data: Mapping[SUPPORTED_BOTLISTS, str] = MISSING
     retry: bool = True
     retry_times: int = 10
 
     def __init__(self, *args, **kwargs) -> None:
-        if len(kwargs) != 0 and self.botclass in MISSING:
+        if len(kwargs) != 0 and self.botclass is MISSING:
             self.bot_id: int = kwargs.get('bot_id')
-            self.servers: int = kwargs.get('servers')
-            self.shards: Mapping[int, ShardInfo] = kwargs.get('shards', MISSING) #type: ignore
-            self.shards_length: Union[Mapping[int, ShardInfo], int] = kwargs.get('shards_length', 1) #type: ignore
-            self.users = kwargs.get('users', None)
-            self.voice = kwargs.get('voice', MISSING)
+            self.servers: int = kwargs.get('servers', MISSING)
+            if self.servers is MISSING:
+                raise ValueError('You must provide a value for servers')
+            self.shards: Mapping[int, 'ShardInfo'] = kwargs.get('shards', MISSING) #type: ignore
+            self.shards_length: Union[Mapping[int, 'ShardInfo'], int] = kwargs.get('shards_length', 1) #type: ignore
+            self.users: int = kwargs.get('users', None)
+            self.voice: int = kwargs.get('voice', None)
             return
         if self.botclass is MISSING:
             raise ValueError('No bot class or kwargs provided')
         self.bot_id = self.botclass.id
         self.servers = len(self.botclass.guilds)
-        self.shards: Mapping[int, ShardInfo] = self.botclass.shards if isinstance(self.botclass, AutoShardedClient) or isinstance(self.botclass, commands.AutoShardedBot) else MISSING #type: ignore
-        self.shards_length: Union[Mapping[int, ShardInfo], int] = len(self.shards) if self.shards is not MISSING else 1 #type: ignore
+        self.shards: Mapping[int, 'ShardInfo'] = self.botclass.shards if isinstance(self.botclass, 'AutoShardedClient') or isinstance(self.botclass, 'commands.AutoShardedBot') else MISSING #type: ignore
+        self.shards_length: Union[Mapping[int, 'ShardInfo'], int] = len(self.shards) if self.shards is not MISSING else 1 #type: ignore
         self.users = len(self.botclass.users)
         self.voice = len(self.botclass.voice_clients)
 
@@ -59,7 +61,9 @@ class StatusPost(BaseHTTP):
         :type botlist: SUPPORTED_BOTLISTS
         :param token: The token provided by the botlist
         :type token: str
-        """        
+        """
+        if self.botlist_data is MISSING:
+            self.botlist_data = {}
         self.botlist_data[botlist] = token
     
     @overload
@@ -67,10 +71,10 @@ class StatusPost(BaseHTTP):
         ...
     
     @overload
-    async def post_stats(self, return_post_data: MISSING) -> None:
+    async def post_stats(self, return_post_data = MISSING) -> None:
         ...
 
-    async def post_stats(self, return_post_data):
+    async def post_stats(self, return_post_data: Optional[bool] = False) -> Union[Dict, None]:
         if len(self.botlist_data) <= 0:
             raise NoBotListData("No botlist data provided")
 
@@ -177,4 +181,7 @@ class StatusPost(BaseHTTP):
                 }
             )
             return_dict.update({"yabl": data})
+        
+        if return_post_data:
+            return return_dict
                     
