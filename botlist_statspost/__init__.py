@@ -11,7 +11,8 @@ import logging
 from .http import *
 from .enums import *
 from .errors import *
-
+from ._type import *
+from .client import *
 
 class VersionInfo(NamedTuple):
     major: int

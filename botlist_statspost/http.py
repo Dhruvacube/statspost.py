@@ -1,9 +1,9 @@
 import asyncio
 import io
-from typing import Optional, Union
+from typing import Union
+from ._type import MISSING
 
 import aiohttp
-from yarl import URL
 
 from . import __version__
 from .enums import RequestTypes
@@ -11,47 +11,41 @@ from .errors import *
 
 
 class BaseHTTP:
-    __slots__ = ["api_token"]
-
-    def __init__(self, api_token: str) -> None:
-        self.api_token: str = api_token
-        self.__user_agent: str = f"fluxpoint/{__version__}"
+    def __init__(self) -> None:
+        self.__user_agent: str = f"botlist_statspost/{__version__}"
 
     async def request(
         self,
         method: RequestTypes,
-        endpoint: str,
-        json: Optional[dict] = None,
-        headers: Optional[dict] = None,
-        _base_url: Optional[Union[str, URL]] = 'https://api.fluxpoint.dev/',
+        _base_url: str,
+        api_token: str,
+        json: dict = MISSING,
+        headers: dict = MISSING,
         retry: bool = True,
-        return_json: bool = True,
-        return_bytes: bool = False,
         retry_times: int = 1
     ) -> Union[aiohttp.ClientResponse, dict, io.IOBase]:
         """Makes an API request"""
-        if json is None:
+        if json is MISSING:
             json = {}
-        __base_url: str = _base_url if _base_url.endswith(
-            '/') else _base_url.strip() + '/'
-        headers = {} if not headers else headers
+        __base_url: str = _base_url if _base_url.endswith('/') else _base_url.strip() + '/'
+        headers = {} if headers is MISSING else headers
 
-        headers["Authorization"] = self.api_token
+        headers["Authorization"] = api_token
         headers["User-Agent"] = self.__user_agent
 
         async with aiohttp.ClientSession() as session:
-            async with session.request(str(method.name).upper(), f'{__base_url}{str(endpoint)}', headers=headers, json=json) as response:
+            async with session.request(str(method.name).upper(), __base_url, headers=headers, json=json) as response:
                 if response.status == 429:
                     if not retry:
                         raise RateLimited("Too many requests, try again later")
                     await asyncio.sleep(response.headers.get('Retry-After'))
-                    return await self.request(method, endpoint, json, headers, retry=retry_times <= 10, retry_times=retry_times+1)
+                    return await self.request(method, __base_url, json, headers, retry=retry_times <= 10, retry_times=retry_times+1)
 
                 if response.status == 200:
                     try:
-                        result = await response.json(content_type="application/json") if return_json else (await response.read()if return_bytes else response)
+                        result = await response.json(content_type="application/json")
                     except UnicodeDecodeError:
-                        raise WrongReturnType("Wrong return type is given")
+                        raise WrongReturnType("Something wrong with the return type, please check the API")
                     return result
 
                 result = await response.json()

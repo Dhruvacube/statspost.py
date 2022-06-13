@@ -50,3 +50,11 @@ class ParameterError(HttpException):
 
     def __init__(self, message: str) -> None:
         super().__init__(400, message)
+
+class NoBotListData(Exception):
+    """
+    No botlist data provided
+    """
+
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
