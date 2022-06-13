@@ -18,8 +18,8 @@ class BaseHTTP:
         api_token: str,
         json: dict = MISSING,
         headers: dict = MISSING,
-        bot: bool = MISSING,
-        bots: bool = MISSING,
+        bot: bool = False,
+        bots: bool = False,
         retry: bool = True,
         retry_times: int = 1
     ) -> Union[aiohttp.ClientResponse, Dict, io.IOBase]:
@@ -29,7 +29,7 @@ class BaseHTTP:
         __base_url: str = _base_url if _base_url.endswith('/') else _base_url.strip() + '/'
         headers = {} if headers is MISSING else headers
 
-        headers["Authorization"] = api_token if bots is not MISSING or bots is not MISSING else f"Bot {api_token}" if bot else f"Bots {api_token}"
+        headers["Authorization"] = api_token if not bot or not bots else f"Bot {api_token}" if bot else f"Bots {api_token}"
         headers["User-Agent"] = f"botlist_statspost/{__version__}"   
         headers["Content-Type"] = "application/json"
 
