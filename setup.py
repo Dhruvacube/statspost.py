@@ -46,6 +46,9 @@ extras_require = {
         'sphinxcontrib-websupport',
         'sphinx-autoapi',
         'typing-extensions'
+    ],
+    'discord': [
+        "discord.py>=1.7.3"
     ]
 
 }

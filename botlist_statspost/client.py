@@ -1,7 +1,9 @@
-from typing import Dict, Literal, Mapping, Optional, Union, final, overload
+from typing import (TYPE_CHECKING, Dict, Literal, Mapping, Optional, Union,
+                    final, overload)
 
-from discord import AutoShardedClient, Client, ShardInfo
-from discord.ext import commands
+if TYPE_CHECKING:
+    from discord import AutoShardedClient, Client, ShardInfo #type: ignore
+    from discord.ext import commands #type: ignore
 
 from ._type import MISSING
 from .enums import RequestTypes
@@ -21,16 +23,26 @@ SUPPORTED_BOTLISTS = Literal[
 
 @final
 class StatusPost(BaseHTTP):
-    botclass: Union[Client, AutoShardedClient, commands.Bot, commands.AutoShardedBot]
+    botclass: Union[Client, AutoShardedClient, commands.Bot, commands.AutoShardedBot] = MISSING #type: ignore
     botlist_data: Mapping[SUPPORTED_BOTLISTS, str] = MISSING
     retry: bool = True
     retry_times: int = 10
 
-    def __init__(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
+        if len(kwargs) != 0 and self.botclass in MISSING:
+            self.bot_id: int = kwargs.get('bot_id')
+            self.servers: int = kwargs.get('servers')
+            self.shards: Mapping[int, ShardInfo] = kwargs.get('shards', MISSING) #type: ignore
+            self.shards_length: Union[Mapping[int, ShardInfo], int] = kwargs.get('shards_length', 1) #type: ignore
+            self.users = kwargs.get('users', None)
+            self.voice = kwargs.get('voice', MISSING)
+            return
+        if self.botclass is MISSING:
+            raise ValueError('No bot class or kwargs provided')
         self.bot_id = self.botclass.id
         self.servers = len(self.botclass.guilds)
-        self.shards: Mapping[int, ShardInfo] = self.botclass.shards if isinstance(self.botclass, AutoShardedClient) or isinstance(self.botclass, commands.AutoShardedBot) else MISSING
-        self.shards_length: Union[Mapping[int, ShardInfo], int] = len(self.shards) if self.shards is not MISSING else 1
+        self.shards: Mapping[int, ShardInfo] = self.botclass.shards if isinstance(self.botclass, AutoShardedClient) or isinstance(self.botclass, commands.AutoShardedBot) else MISSING #type: ignore
+        self.shards_length: Union[Mapping[int, ShardInfo], int] = len(self.shards) if self.shards is not MISSING else 1 #type: ignore
         self.users = len(self.botclass.users)
         self.voice = len(self.botclass.voice_clients)
 
