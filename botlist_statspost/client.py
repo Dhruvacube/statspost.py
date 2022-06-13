@@ -14,7 +14,8 @@ SUPPORTED_BOTLISTS = Literal[
     "bladelist", 
     "discordlistspace", 
     "discordbotsgg",
-    "discordlabs"
+    "discordlabs",
+    "discord-botlist.eu"
 ]
 
 @final
@@ -140,4 +141,15 @@ class StatusPost(BaseHTTP):
             )
             return_dict.update({"discordlabs": data})
         
+        #discord-botlist.eu
+        if self.botlist_data.get("discord-botlist.eu"):
+            data = await self.request(
+                method=RequestTypes.PATCH,
+                _base_url="https://api.discord-botlist.eu/v1/update",
+                api_token=f'Bearer {self.botlist_data["discord-botlist.eu"]}',
+                json={
+                    "serverCount": self.servers
+                }
+            )
+            return_dict.update({"discord-botlist.eu": data})
                     
