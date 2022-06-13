@@ -75,7 +75,7 @@ setup(
     python_requires='>=3.8',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        'License :: OSI Approved :: MIT License',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Operating System :: OS Independent',
