@@ -141,7 +141,7 @@ class StatsPost(BaseHTTP):
             data = await self.request(
                 method=RequestTypes.POST,
                 _base_url=f"https://api.bladelist.gg/bots/{self.bot_id}/",
-                api_token=f'Token self.botlist_data["bladelist"]',
+                api_token=f'Token {self.botlist_data["bladelist"]}',
                 json={
                     "server_count": self.servers,
                     "shard_count": self.users,
