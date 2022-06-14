@@ -38,7 +38,7 @@ SUPPORTED_BOTLISTS = Literal[
     "motiondevelopment",
     "discordservices",
     "vcodes",
-    # "discordz",
+    "discordz",
     "fateslist",
     "disforge",
 ]
@@ -351,6 +351,20 @@ class StatsPost(BaseHTTP):
                 json=json_req,
             )
             return_dict.update({"fateslist": data})
+        
+        #discordz
+        if self.botlist_data.get("discordz"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f'https://api.discordz.gg/bot/{self.bot_id}/stats',
+                api_token=self.botlist_data["discordz"],
+                json={
+                    "server_count": self.servers,
+                    "shard_count": self.shards_length,
+                    "user_count": self.users
+                },
+            )
+            return_dict.update({"discordz": data})
 
         if return_post_data:
             return return_dict

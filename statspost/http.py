@@ -9,8 +9,12 @@ from . import __version__
 from .enums import RequestTypes
 from .errors import *
 
-
 class BaseHTTP:
+    """The base class for making http requests
+    """
+
+    __slots__ = ()
+
     async def request(
         self,
         method: RequestTypes,
@@ -23,7 +27,18 @@ class BaseHTTP:
         retry: bool = True,
         retry_times: int = 1,
     ) -> Union[aiohttp.ClientResponse, Dict, io.IOBase]:
-        """Makes an API request"""
+        """Makes an API request
+
+        :raises RateLimited: When the 429 response is returned
+        :raises WrongReturnType: When the :exc:`UnicodeDecodeError` is raised
+        :raises ParameterError: When the 400 response is returned
+        :raises Unauthorised: When the 401 response is returned
+        :raises ApiError: When the 500 response is returned
+        :raises HttpException: For the other and generall http exceptions
+        :return: Bytes data for the image
+        :rtype: Union[aiohttp.ClientResponse, dict, io.IOBase]
+        """
+
         if json is MISSING:
             json = {}
         __base_url: str = (
