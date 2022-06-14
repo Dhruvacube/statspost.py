@@ -1,15 +1,5 @@
-from typing import (
-    TYPE_CHECKING,
-    Dict,
-    Iterable,
-    Literal,
-    Mapping,
-    Optional,
-    Union,
-    final,
-    get_args,
-    overload,
-)
+from typing import (TYPE_CHECKING, Dict, Iterable, Literal, Mapping, Optional,
+                    Union, final, get_args, overload)
 
 if TYPE_CHECKING:
     from discord import AutoShardedClient, Client, ShardInfo  # type: ignore
@@ -89,6 +79,9 @@ class StatsPost(BaseHTTP):
         :param token: The token provided by the botlist
         :type token: str
         """
+        if botlist not in VALID_BOTLISTS:
+            raise RuntimeError("Invalid botlist")
+        
         if self.botlist_data is MISSING:
             self.botlist_data = {}
         self.botlist_data[botlist] = token

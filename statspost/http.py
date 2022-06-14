@@ -1,17 +1,21 @@
 import asyncio
 import io
-from typing import Union, Dict
-from ._type import MISSING
+import logging
+from typing import Dict, Union
 
 import aiohttp
 
 from . import __version__
+from ._type import MISSING
 from .enums import RequestTypes
 from .errors import *
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 class BaseHTTP:
     """The base class for making http requests
     """
+    silently_fail: bool = True
 
     __slots__ = ()
 
@@ -74,23 +78,32 @@ class BaseHTTP:
                         retry_times=retry_times + 1,
                     )
 
-                if response.status == 200:
-                    try:
-                        result = await response.json(content_type="application/json")
-                    except UnicodeDecodeError:
+                
+                try:
+                    result = await response.json(content_type="application/json")
+                except UnicodeDecodeError:
+                    logging.error("Something wrong with the return type, please check the API")
+                    if not self.silently_fail:
                         raise WrongReturnType(
                             "Something wrong with the return type, please check the API"
                         )
-                    return result
 
-                result = await response.json()
+                if response.status == 200:
+                    return result
+                
+                logging.warning(result)
                 if response.status == 400:
-                    raise ParameterError(result)
+                    if not self.silently_fail:
+                        raise ParameterError(result)
 
                 if response.status == 401:
-                    raise Unauthorised(result)
+                    logging.warning(result)
+                    if not self.silently_fail:
+                        raise Unauthorised(result)
 
                 if response.status == 500:
-                    raise ApiError(result)
+                    if not self.silently_fail:
+                        raise ApiError(result)
 
-                raise HttpException(response.status, result)
+                if not self.silently_fail:
+                    raise HttpException(response.status, result)
