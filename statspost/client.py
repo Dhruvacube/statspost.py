@@ -18,7 +18,8 @@ SUPPORTED_BOTLISTS = Literal[
     "discordbotsgg",
     "discordlabs",
     "discord-botlist.eu",
-    "yabl"
+    "yabl",
+    "voidbots"
 ]
 
 @final
@@ -181,6 +182,19 @@ class StatsPost(BaseHTTP):
                 }
             )
             return_dict.update({"yabl": data})
+        
+        #voidbots
+        if self.botlist_data.get("voidbots"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://api.voidbots.net/stats/{self.bot_id}",
+                api_token=self.botlist_data["voidbots"],
+                json={
+                    "server_count": self.servers,
+                    "shard_count": self.shards_length,
+                }
+            )
+            return_dict.update({"voidbots": data})
         
         if return_post_data:
             return return_dict
