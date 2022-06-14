@@ -21,6 +21,8 @@ SUPPORTED_BOTLISTS = Literal[
     "yabl",
     "voidbots",
     "radarbotdirectory",
+    "blist",
+    "botlist.me"
 ]
 
 @final
@@ -208,8 +210,33 @@ class StatsPost(BaseHTTP):
                     'shards': self.shards_length,
                 }
             )
-            return_dict.update({"radarbotdirectory": data})            
+            return_dict.update({"radarbotdirectory": data})
 
+        #blist            
+        if self.botlist_data.get("blist"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://blist.xyz/api/v2/bot/{self.bot_id}/stats/",
+                api_token=self.botlist_data["blist"],
+                json={
+                    "server_count": self.servers,
+                    "shard_count": self.shards_length,
+                }
+            )
+            return_dict.update({"blist": data})
+        
+        #botlist.me
+        if self.botlist_data.get("botlist.me"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://botlist.me/api/v1/bots/{self.bot_id}/stats",
+                api_token=self.botlist_data["botlist.me"],
+                json={
+                    "server_count": self.servers,
+                    "shard_count": self.shards_length,
+                }
+            )
+            return_dict.update({"botlist.me": data})
         
         if return_post_data:
             return return_dict
