@@ -1,5 +1,5 @@
-from typing import (TYPE_CHECKING, Dict, Literal, Mapping, Optional, Union,
-                    final, overload)
+from typing import (TYPE_CHECKING, Dict, Iterable, Literal, Mapping, Optional,
+                    Union, final, get_args, overload)
 
 if TYPE_CHECKING:
     from discord import AutoShardedClient, Client, ShardInfo #type: ignore
@@ -24,8 +24,16 @@ SUPPORTED_BOTLISTS = Literal[
     "blist",
     "botlist.me",
     "discords",
-    "infinity"
+    "infinity",
+    "motiondevelopment",
+    "discordservices",
+    "vcodes",
+    # "discordz",
+    "fateslist",
+    "disforge"
 ]
+
+VALID_BOTLISTS: Iterable = get_args(SUPPORTED_BOTLISTS)
 
 @final
 class StatsPost(BaseHTTP):
@@ -265,6 +273,44 @@ class StatsPost(BaseHTTP):
                 }
             )
             return_dict.update({"infinity": data})
+        
+        #motiondevelopment
+        if self.botlist_data.get("motiondevelopment"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://www.motiondevelopment.top/api/v1.2//bots/{self.bot_id}/stats",
+                api_token=self.botlist_data["motiondevelopment"],
+                json={
+                    "guilds": self.servers,
+                }
+            )
+            return_dict.update({"motiondevelopment": data})
+        
+        #discordservices
+        if self.botlist_data.get("discordservices"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://api.discordservices.net/bot/{self.bot_id}/stats",
+                api_token=self.botlist_data["discordservices"],
+                json={
+                    "servers": self.servers,
+                    "shards": self.shards_length,
+                }
+            )
+            return_dict.update({"discordservices": data})
+        
+        #vcodes
+        if self.botlist_data.get("vcodes"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://vcodes.xyz/api/v1/stats",
+                api_token=self.botlist_data["vcodes"],
+                json={
+                    "guilds": self.servers,
+                    "shards": self.shards_length,
+                }
+            )
+            return_dict.update({"vcodes": data})
         
         if return_post_data:
             return return_dict
