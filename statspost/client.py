@@ -312,6 +312,35 @@ class StatsPost(BaseHTTP):
             )
             return_dict.update({"vcodes": data})
         
+        #disforge
+        if self.botlist_data.get("disforge"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://disforge.com/api/botstats/{self.bot_id}",
+                api_token=self.botlist_data["disforge"],
+                json={
+                    "servers": self.servers,
+                }
+            )
+            return_dict.update({"disforge": data})
+        
+        #fateslist
+        if self.botlist_data.get("fateslist"):
+            json_req = {
+                    "servers": self.servers,
+                    "shard_count": self.shards_length,
+                    "user_count": self.users
+                }
+            if self.shards is not MISSING:
+                json_req["shards"] = list(map(lambda x: x.id, self.shards.keys()))
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://api.fateslist.xyz/bots/{self.bot_id}/stats",
+                api_token=self.botlist_data["fateslist"],
+                json=json_req
+            )
+            return_dict.update({"fateslist": data})
+        
         if return_post_data:
             return return_dict
                     
