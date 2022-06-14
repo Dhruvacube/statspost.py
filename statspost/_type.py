@@ -14,11 +14,11 @@ class _MissingSentinel:
         return 0
 
     def __repr__(self):
-        return '...'
-    
+        return "..."
+
     def __iter__(self):
         return iter([])
-    
+
     def __len__(self):
         return 0
 
