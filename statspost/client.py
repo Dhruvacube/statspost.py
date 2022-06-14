@@ -23,7 +23,8 @@ SUPPORTED_BOTLISTS = Literal[
     "radarbotdirectory",
     "blist",
     "botlist.me",
-    "discords"
+    "discords",
+    "infinity"
 ]
 
 @final
@@ -216,7 +217,7 @@ class StatsPost(BaseHTTP):
         #blist            
         if self.botlist_data.get("blist"):
             data = await self.request(
-                method=RequestTypes.POST,
+                method=RequestTypes.PATCH,
                 _base_url=f"https://blist.xyz/api/v2/bot/{self.bot_id}/stats/",
                 api_token=self.botlist_data["blist"],
                 json={
@@ -250,6 +251,20 @@ class StatsPost(BaseHTTP):
                 }
             )
             return_dict.update({"discords": data})
+        
+        #infinity
+        if self.botlist_data.get("infinity"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://api.infinitybotlist.com/bots/stats",
+                api_token=self.botlist_data["infinity"],
+                json={
+                    "servers": self.servers,
+                    "shards": self.shards_length,
+                    "users": self.users,
+                }
+            )
+            return_dict.update({"infinity": data})
         
         if return_post_data:
             return return_dict
