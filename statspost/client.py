@@ -19,7 +19,8 @@ SUPPORTED_BOTLISTS = Literal[
     "discordlabs",
     "discord-botlist.eu",
     "yabl",
-    "voidbots"
+    "voidbots",
+    "radarbotdirectory",
 ]
 
 @final
@@ -195,6 +196,20 @@ class StatsPost(BaseHTTP):
                 }
             )
             return_dict.update({"voidbots": data})
+        
+        #radarbotdirectory
+        if self.botlist_data.get("radarbotdirectory"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://radarbotdirectory.xyz/api/bot/{self.bot_id}/stats",
+                api_token=self.botlist_data["radarbotdirectory"],
+                json={
+                    'guilds': self.servers,
+                    'shards': self.shards_length,
+                }
+            )
+            return_dict.update({"radarbotdirectory": data})            
+
         
         if return_post_data:
             return return_dict
