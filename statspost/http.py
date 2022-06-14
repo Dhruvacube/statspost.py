@@ -10,11 +10,12 @@ from ._type import MISSING
 from .enums import RequestTypes
 from .errors import *
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.DEBUG)
+
 
 class BaseHTTP:
-    """The base class for making http requests
-    """
+    """The base class for making http requests"""
+
     silently_fail: bool = True
 
     __slots__ = ()
@@ -78,11 +79,12 @@ class BaseHTTP:
                         retry_times=retry_times + 1,
                     )
 
-                
                 try:
                     result = await response.json(content_type="application/json")
                 except UnicodeDecodeError:
-                    logging.error("Something wrong with the return type, please check the API")
+                    logging.error(
+                        "Something wrong with the return type, please check the API"
+                    )
                     if not self.silently_fail:
                         raise WrongReturnType(
                             "Something wrong with the return type, please check the API"
@@ -90,7 +92,7 @@ class BaseHTTP:
 
                 if response.status == 200:
                     return result
-                
+
                 logging.warning(result)
                 if response.status == 400:
                     if not self.silently_fail:
