@@ -22,7 +22,8 @@ SUPPORTED_BOTLISTS = Literal[
     "voidbots",
     "radarbotdirectory",
     "blist",
-    "botlist.me"
+    "botlist.me",
+    "discords"
 ]
 
 @final
@@ -237,6 +238,18 @@ class StatsPost(BaseHTTP):
                 }
             )
             return_dict.update({"botlist.me": data})
+        
+        #discords
+        if self.botlist_data.get("discords"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url=f"https://discords.com/bots/api/bot/{self.bot_id}",
+                api_token=self.botlist_data["discords"],
+                json={
+                    "server_count": self.servers,
+                }
+            )
+            return_dict.update({"discords": data})
         
         if return_post_data:
             return return_dict
