@@ -56,6 +56,3 @@ class NoBotListData(Exception):
     """
     No botlist data provided
     """
-
-    def __init__(self, message: str) -> None:
-        super().__init__(message)

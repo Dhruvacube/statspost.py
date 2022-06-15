@@ -94,18 +94,16 @@ class BaseHTTP:
                     return result
 
                 logging.warning(result)
-                if response.status == 400:
-                    if not self.silently_fail:
-                        raise ParameterError(result)
+                if response.status == 400 and not self.silently_fail:
+                    raise ParameterError(result)
 
                 if response.status == 401:
                     logging.warning(result)
                     if not self.silently_fail:
                         raise Unauthorised(result)
 
-                if response.status == 500:
-                    if not self.silently_fail:
-                        raise ApiError(result)
+                if response.status == 500 and not self.silently_fail:
+                    raise ApiError(result)
 
                 if not self.silently_fail:
                     raise HttpException(response.status, result)
