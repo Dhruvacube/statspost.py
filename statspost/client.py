@@ -68,7 +68,7 @@ class StatsPost(BaseHTTP):
             raise ValueError("No bot class or kwargs provided")
         self.bot_id = self.botclass.id
         self.servers = len(self.botclass.guilds)
-        self.shards: Mapping[int, "ShardInfo"] = self.botclass.shards if isinstance(self.botclass, "AutoShardedClient") or isinstance(self.botclass, "commands.AutoShardedBot") else MISSING  # type: ignore
+        self.shards: Mapping[int, "ShardInfo"] = self.botclass.shards if isinstance(self.botclass, ("AutoShardedClient", "commands.AutoShardedBot")) else MISSING  # type: ignore
         self.shards_length: Union[Mapping[int, "ShardInfo"], int] = len(self.shards) if self.shards is not MISSING else 1  # type: ignore
         self.users = len(self.botclass.users)
         self.voice = len(self.botclass.voice_clients)
