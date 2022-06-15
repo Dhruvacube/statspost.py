@@ -63,10 +63,10 @@ packages = [
 setup(
     name=f"{pakage_name}.py",
     author="Dhruva Shaw",
-    url="https://github.com/The-4th-Hokage/botlist-statspost",
+    url="https://github.com/Dhruvacube/statspost.py",
     project_urls={
         "Documentation": "https://bluedocs.page/fluxpoint-api",
-        "Issue tracker": "https://github.com/The-4th-Hokage/botlist-statspost/issues",
+        "Issue tracker": "https://github.com/Dhruvacube/statspost.py/issues",
     },
     version=version,
     packages=packages,
