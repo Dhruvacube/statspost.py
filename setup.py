@@ -30,7 +30,7 @@ if version.endswith(("a", "b", "rc")):
         if out:
             version += out.decode("utf-8").strip()
         p = subprocess.Popen(
-            ["git", "rev-parse", "--short", "HEAD"],
+            ["git", "rev-parse", "--short", "HEAD"], #skipcq : BAN-B607
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
