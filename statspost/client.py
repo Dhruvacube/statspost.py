@@ -1,5 +1,15 @@
-from typing import (TYPE_CHECKING, Dict, Iterable, Literal, Mapping, Optional,
-                    Union, final, get_args, overload)
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    Iterable,
+    Literal,
+    Mapping,
+    Optional,
+    Union,
+    final,
+    get_args,
+    overload,
+)
 
 if TYPE_CHECKING:
     from discord import AutoShardedClient, Client, ShardInfo  # type: ignore
@@ -81,7 +91,7 @@ class StatsPost(BaseHTTP):
         """
         if botlist not in VALID_BOTLISTS:
             raise RuntimeError("Invalid botlist")
-        
+
         if self.botlist_data is MISSING:
             self.botlist_data = {}
         self.botlist_data[botlist] = token
@@ -344,17 +354,17 @@ class StatsPost(BaseHTTP):
                 json=json_req,
             )
             return_dict.update({"fateslist": data})
-        
-        #discordz
+
+        # discordz
         if self.botlist_data.get("discordz"):
             data = await self.request(
                 method=RequestTypes.POST,
-                _base_url=f'https://api.discordz.gg/bot/{self.bot_id}/stats',
+                _base_url=f"https://api.discordz.gg/bot/{self.bot_id}/stats",
                 api_token=self.botlist_data["discordz"],
                 json={
                     "server_count": self.servers,
                     "shard_count": self.shards_length,
-                    "user_count": self.users
+                    "user_count": self.users,
                 },
             )
             return_dict.update({"discordz": data})
