@@ -21,7 +21,7 @@ Key Features
 - Optimised in both speed and memory.
 
 Installing
-----------
+------------
 
 **Python 3.8 or higher is required**
 
@@ -63,20 +63,24 @@ Quick Example
       from statspost import StatsPost
       import asyncio
       import sys
+      
+      #defining run function
+      run = asyncio.get_event_loop().run_until_complete
 
-      # setting up the fluxpoint client handler
-      a = StatsPost(api_token="get api token from https://fluxpoint.dev/api/access")
+      # setting up the statpost client handler
+      a=StatsPost(bot_id=935242576343224352,servers=80) 
+      a.add_botlist('topgg','topgg_token')
 
       # setting up the windows loop policy according to the operating system
-      if sys.platform.startswith('win32') or sys.platform.startswith('cygwin'):
+      if sys.platform.startswith(('win32', 'cygwin')):
           asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-      # getting the image url of AZURLANE image
-      print(asyncio.run(a.azurlane()))
+      # Post stats, and return the data
+      print(run(a.post_stats(return_post_data=True)))
 
 
 Links
 ------
 
-- `Documentation <https://fluxpointpy.readthedocs.io/en/latest/>`_
+- `Documentation <https://statspostpy.readthedocs.io/en/latest/>`_
 - `Official Support Discord Server <https://discord.gg/vfXHwS3nmQ>`_

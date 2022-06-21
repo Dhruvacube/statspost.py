@@ -13,8 +13,6 @@ Welcome to statspost's documentation!
 
 A modern, easy to use, feature-rich, and async ready API wrapper for statspost written in Python.
 
-.. image:: /_static/statspost.png
-
 
 Key Features
 -------------
@@ -53,7 +51,7 @@ To install the development version, do the following:
 
 .. code:: sh
 
-    $ git clone https://github.com/The-4th-Hokage/statspost.py
+    $ git clone https://github.com/Dhruvacube/statspost.py
     $ cd statspost.py
     $ python3 -m pip install -U .[speed]
 
@@ -63,31 +61,31 @@ Quick Example
 
 .. code:: py
 
-      from statspost import statspostClient
+      from statspost import StatsPost
       import asyncio
       import sys
+      
+      #defining run function
+      run = asyncio.get_event_loop().run_until_complete
 
-      # setting up the fluxpoint client handler
-      a = FluxpointClient(api_token="get api token from https://fluxpoint.dev/api/access")
+      # setting up the statpost client handler
+      a=StatsPost(bot_id=935242576343224352,servers=80) 
+      a.add_botlist('topgg','topgg_token')
 
       # setting up the windows loop policy according to the operating system
-      if sys.platform.startswith('win32') or sys.platform.startswith('cygwin'):
+      if sys.platform.startswith(('win32', 'cygwin')):
           asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-      # getting the image url of AZURLANE image
-      print(asyncio.run(a.azurlane()))
+      # Post stats, and return the data
+      print(run(a.post_stats(return_post_data=True)))
 
 
-You can find more examples in the `examples directory <https://github.com/The-4th-Hokage/fluxpoint.py/tree/master/examples>`_.
+You can find more examples in the `examples directory <https://github.com/Dhruvacube/statspost.py/tree/master/examples>`_.
 
 Links
 ------
 
 - `Official Support Discord Server <https://discord.gg/vfXHwS3nmQ>`_
-- `Official Fluxpoint server <https://discord.gg/fluxpoint>`_
-- `Get Fluxpoint api access <https://fluxpoint.dev/api/access>`_
-- `Official Fluxpoint api docs <https://bluedocs.page/fluxpoint-api>`_
-
 
 
 Indices and tables

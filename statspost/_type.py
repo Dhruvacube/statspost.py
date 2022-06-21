@@ -2,6 +2,8 @@ from typing import Any
 
 
 class _MissingSentinel:
+    """A type safe sentinel for the `None` type.
+    """    
     __slots__ = ()
 
     def __eq__(self, other):

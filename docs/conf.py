@@ -92,7 +92,10 @@ html_experimental_html5_writer = True
 # a list of builtin themes.
 html_theme = 'basic'
 
-suppress_warnings = ["autoapi"]
+suppress_warnings = [
+    "autoapi", 
+    "ref.python",
+]
 
 
 html_context = {
@@ -102,7 +105,7 @@ html_context = {
 resource_links = {
     'discord': 'https://discord.gg/vfXHwS3nmQ',
     'issues': 'https://github.com/Dhruvacube/statspost.py/issues',
-    'discussions': 'https://github.com/Dhruvacube/statspost.pyy/discussions',
+    'discussions': 'https://github.com/Dhruvacube/statspost.py/discussions',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -114,7 +117,7 @@ exclude_patterns = ['_build']
 pygments_style = 'friendly'
 
 html_search_scorer = '_static/scorer.js'
-html_favicon = './_static/favicon.ico'
+# html_favicon = './_static/favicon.ico'
 
 html_js_files = [
     'custom.js',
