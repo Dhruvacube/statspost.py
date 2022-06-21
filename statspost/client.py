@@ -278,7 +278,7 @@ class StatsPost(BaseHTTP):
         if self.botlist_data.get("infinity"):
             data = await self.request(
                 method=RequestTypes.POST,
-                _base_url=f"https://api.infinitybotlist.com/bots/stats",
+                _base_url="https://api.infinitybotlist.com/bots/stats",
                 api_token=self.botlist_data["infinity"],
                 json={
                     "servers": self.servers,
@@ -317,7 +317,7 @@ class StatsPost(BaseHTTP):
         if self.botlist_data.get("vcodes"):
             data = await self.request(
                 method=RequestTypes.POST,
-                _base_url=f"https://vcodes.xyz/api/v1/stats",
+                _base_url="https://vcodes.xyz/api/v1/stats",
                 api_token=self.botlist_data["vcodes"],
                 json={
                     "guilds": self.servers,
