@@ -43,7 +43,6 @@ class BaseHTTP:
         :return: Bytes data for the image
         :rtype: Union[aiohttp.ClientResponse, dict, io.IOBase]
         """
-
         if json is MISSING:
             json = {}
         __base_url: str = (
