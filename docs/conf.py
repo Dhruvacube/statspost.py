@@ -94,7 +94,7 @@ html_experimental_html5_writer = True
 html_theme = "basic"
 
 suppress_warnings = [
-    "autoapi", 
+    "autoapi",
     "ref.python",
 ]
 
@@ -104,9 +104,9 @@ html_context = {
 }
 
 resource_links = {
-    'discord': 'https://discord.gg/vfXHwS3nmQ',
-    'issues': 'https://github.com/Dhruvacube/statspost.py/issues',
-    'discussions': 'https://github.com/Dhruvacube/statspost.py/discussions',
+    "discord": "https://discord.gg/vfXHwS3nmQ",
+    "issues": "https://github.com/Dhruvacube/statspost.py/issues",
+    "discussions": "https://github.com/Dhruvacube/statspost.py/discussions",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -117,7 +117,7 @@ exclude_patterns = ["_build"]
 
 pygments_style = "friendly"
 
-html_search_scorer = '_static/scorer.js'
+html_search_scorer = "_static/scorer.js"
 # html_favicon = './_static/favicon.ico'
 
 html_js_files = ["custom.js", "settings.js", "copy.js", "sidebar.js"]
