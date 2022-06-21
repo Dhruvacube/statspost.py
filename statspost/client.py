@@ -48,12 +48,16 @@ VALID_BOTLISTS: Iterable = get_args(SUPPORTED_BOTLISTS)
 
 @final
 class StatsPost(BaseHTTP):
+    """The client to post stats
+
+        :raises ValueError: When one of the default values is missing
+    """   
     botclass: Union["Client", "AutoShardedClient", "commands.Bot", "commands.AutoShardedBot"] = MISSING  # type: ignore
     botlist_data: Mapping[SUPPORTED_BOTLISTS, str] = MISSING
     retry: bool = True
     retry_times: int = 10
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:     
         if len(kwargs) != 0 and self.botclass is MISSING:
             self.bot_id: int = kwargs.get("bot_id")
             self.servers: int = kwargs.get("servers", MISSING)
@@ -107,6 +111,14 @@ class StatsPost(BaseHTTP):
     async def post_stats(
         self, return_post_data: Optional[bool] = False
     ) -> Union[Dict, None]:
+        """Start posting stats from listed of provided botlist
+
+        :param return_post_data: The post data return by the botlist, defaults to False
+        :type return_post_data: Optional[bool], optional
+        :raises NoBotListData: When this function is ran without providing botlist data to the client
+        :return: The post data is returned is asked else None is returned.
+        :rtype: Union[Dict, None]
+        """    
         if len(self.botlist_data) <= 0:
             raise NoBotListData("No botlist data provided")
 
