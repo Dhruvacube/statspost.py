@@ -61,8 +61,8 @@ class StatsPost(BaseHTTP):
                 raise ValueError("You must provide a value for servers")
             self.shards: Mapping[int, "ShardInfo"] = kwargs.get("shards", MISSING)  # type: ignore
             self.shards_length: Union[Mapping[int, "ShardInfo"], int] = kwargs.get("shards_length", 1)  # type: ignore
-            self.users: int = kwargs.get("users", None)
-            self.voice: int = kwargs.get("voice", None)
+            self.users: int = kwargs.get("users")
+            self.voice: int = kwargs.get("voice")
             return
         if self.botclass is MISSING:
             raise ValueError("No bot class or kwargs provided")
