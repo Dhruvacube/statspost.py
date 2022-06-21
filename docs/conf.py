@@ -117,13 +117,8 @@ exclude_patterns = ["_build"]
 
 pygments_style = "friendly"
 
-<<<<<<< HEAD
 html_search_scorer = '_static/scorer.js'
 # html_favicon = './_static/favicon.ico'
-=======
-html_search_scorer = "_static/scorer.js"
-html_favicon = "./_static/favicon.ico"
->>>>>>> b9a2aa7b2f69f11f7d9d1abf3859cbe45b4632c1
 
 html_js_files = ["custom.js", "settings.js", "copy.js", "sidebar.js"]
 
