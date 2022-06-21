@@ -44,13 +44,13 @@ jobs:
         run: |
           pip install -e .[docs,speed]
 
-      - name: Build docs
-        shell: bash
-        run: |
-          cd docs
-          sphinx-build -b html -D language=${DOCS_LANGUAGE} -a -n -T -W --keep-going . _build/html
-        env:
-          DOCS_LANGUAGE: ${{ matrix.language }}
+      # - name: Build docs
+      #   shell: bash
+      #   run: |
+      #     cd docs
+      #     sphinx-build -b html -D language=${DOCS_LANGUAGE} -a -n -T -W --keep-going . _build/html
+      #   env:
+      #     DOCS_LANGUAGE: ${{ matrix.language }}
 
       # - name: Upload docs
       #   uses: actions/upload-artifact@v2
