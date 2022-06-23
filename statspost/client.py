@@ -24,7 +24,6 @@ SUPPORTED_BOTLISTS = Literal[
     "topgg",
     "discordbotlist",
     "bladelist",
-    "discordlistspace",
     "discordbotsgg",
     "discordlabs",
     "discord-botlist.eu",
@@ -163,18 +162,6 @@ class StatsPost(BaseHTTP):
                 },
             )
             return_dict.update({"bladelist": data})
-
-        # discordlistspace
-        if self.botlist_data.get("discordlistspace"):
-            data = await self.request(
-                method=RequestTypes.POST,
-                _base_url=f"https://api.discordlist.space//bots/v2/bots/{self.bot_id}",
-                api_token=self.botlist_data["discordlistspace"],
-                json={
-                    "serverCount": self.servers,
-                },
-            )
-            return_dict.update({"discordlistspace": data})
 
         # discordbotsgg
         if self.botlist_data.get("discordbotsgg"):
