@@ -361,7 +361,7 @@ class StatsPost(BaseHTTP):
             )
             return_dict.update({"disforge": data})
 
-         #TopicList
+        # TopicList
         if self.botlist_data.get("TopicList"):
             data = await self.request(
                 method=RequestTypes.POST,
