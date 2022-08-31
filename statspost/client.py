@@ -36,6 +36,7 @@ SUPPORTED_BOTLISTS = Literal[
     "infinity",
     "motiondevelopment",
     "discordservices",
+    "TopicList",
     "vcodes",
     "discordz",
     # "fateslist",
@@ -211,6 +212,19 @@ class StatsPost(BaseHTTP):
                 json={"guildCount": self.servers},
             )
             return_dict.update({"yabl": data})
+         #TopicList
+        if self.botlist_data.get("Topic"):
+            data = await self.request(
+                method=RequestTypes.POST,
+                _base_url="https://api.topiclist.xyz/bots/stats",
+                api_token=self.botlist_data["topic"],
+                json={
+                    "servers": self.servers,
+                    "shards": self.shards_length,
+                    "users": self.users,
+                },
+            )
+            return_dict.update({"topic": data})
 
         # voidbots
         if self.botlist_data.get("voidbots"):
