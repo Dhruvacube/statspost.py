@@ -53,7 +53,7 @@ extras_require = {
         "sphinx-autoapi",
         "typing-extensions",
     ],
-    "discord": ["discord.py>=1.7.3"],
+    "discord": ["discord.py>=2.0.0"],
 }
 
 packages = [

@@ -38,11 +38,13 @@ SUPPORTED_BOTLISTS = Literal[
     "discordservices",
     "vcodes",
     "discordz",
-    "fateslist",
+    # "fateslist",
     "disforge",
 ]
+"""Type hint for the supported Botlists"""
 
 VALID_BOTLISTS: Iterable = get_args(SUPPORTED_BOTLISTS)
+"""List of Botlists supported"""
 
 
 @final
@@ -338,22 +340,22 @@ class StatsPost(BaseHTTP):
             )
             return_dict.update({"disforge": data})
 
-        # fateslist
-        if self.botlist_data.get("fateslist"):
-            json_req = {
-                "servers": self.servers,
-                "shard_count": self.shards_length,
-                "user_count": self.users,
-            }
-            if self.shards is not MISSING:
-                json_req["shards"] = list(map(lambda x: x.id, self.shards.keys()))
-            data = await self.request(
-                method=RequestTypes.POST,
-                _base_url=f"https://api.fateslist.xyz/bots/{self.bot_id}/stats",
-                api_token=self.botlist_data["fateslist"],
-                json=json_req,
-            )
-            return_dict.update({"fateslist": data})
+        # # fateslist
+        # if self.botlist_data.get("fateslist"):
+        #     json_req = {
+        #         "servers": self.servers,
+        #         "shard_count": self.shards_length,
+        #         "user_count": self.users,
+        #     }
+        #     if self.shards is not MISSING:
+        #         json_req["shards"] = list(map(lambda x: x.id, self.shards.keys()))
+        #     data = await self.request(
+        #         method=RequestTypes.POST,
+        #         _base_url=f"https://api.fateslist.xyz/bots/{self.bot_id}/stats",
+        #         api_token=self.botlist_data["fateslist"],
+        #         json=json_req,
+        #     )
+        #     return_dict.update({"fateslist": data})
 
         # discordz
         if self.botlist_data.get("discordz"):
