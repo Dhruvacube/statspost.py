@@ -217,7 +217,7 @@ class StatsPost(BaseHTTP):
             data = await self.request(
                 method=RequestTypes.POST,
                 _base_url="https://api.topiclist.xyz/bots/stats",
-                api_token=self.botlist_data["topic"],
+                api_token=self.botlist_data.get("topiclist"),
                 json={
                     "servers": self.servers,
                     "shards": self.shards_length,
