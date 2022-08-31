@@ -212,6 +212,7 @@ class StatsPost(BaseHTTP):
                 json={"guildCount": self.servers},
             )
             return_dict.update({"yabl": data})
+        
          #TopicList
         if self.botlist_data.get("Topic"):
             data = await self.request(
