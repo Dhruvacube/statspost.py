@@ -40,12 +40,32 @@ SUPPORTED_BOTLISTS = Literal[
     "discordz",
     # "fateslist",
     "disforge",
-    "TopicList",
+    "topicList",
 ]
 """Type hint for the supported Botlists"""
 
 VALID_BOTLISTS: Iterable = get_args(SUPPORTED_BOTLISTS)
-"""List of Botlists supported"""
+"""List of Botlists supported
+    - topgg
+    - discordbotlist
+    - bladelist
+    - discordbotsgg
+    - discordlabs
+    - discord-botlist.eu
+    - yabl
+    - voidbots
+    - radarbotdirectory
+    - blist
+    - botlist.me
+    - discords
+    - infinity
+    - motiondevelopment
+    - discordservices
+    - vcodes
+    - discordz
+    - disforge
+    - topicList
+"""
 
 
 @final
@@ -333,7 +353,7 @@ class StatsPost(BaseHTTP):
         if self.botlist_data.get("disforge"):
             data = await self.request(
                 method=RequestTypes.POST,
-                _base_url="https://disforge.com/api/botstats/{self.bot_id}",
+                _base_url=f"https://disforge.com/api/botstats/{self.bot_id}",
                 api_token=self.botlist_data["disforge"],
                 json={
                     "servers": self.servers,
@@ -342,18 +362,18 @@ class StatsPost(BaseHTTP):
             return_dict.update({"disforge": data})
 
          #TopicList
-         if self.botlist_data.get("TopicList"):
+        if self.botlist_data.get("TopicList"):
             data = await self.request(
                 method=RequestTypes.POST,
                 _base_url="https://api.topiclist.xyz/bots/stats",
-                api_token=self.botlist_data["TopicList"],
+                api_token=self.botlist_data.get("topicList"),
                 json={
                     "servers": self.servers,
                     "shards": self.shards_length,
                     "users": self.users,
                 },
             )
-            return_dict.update({"Topiclist": data})
+            return_dict.update({"topicList": data})
 
         # # fateslist
         # if self.botlist_data.get("fateslist"):
