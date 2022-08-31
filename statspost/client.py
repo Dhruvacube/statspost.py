@@ -207,7 +207,7 @@ class StatsPost(BaseHTTP):
         if self.botlist_data.get("yabl"):
             data = await self.request(
                 method=RequestTypes.POST,
-                _base_url=f"https://yabl.xyz/api/bot/{self.bot_id}/stats",
+                _base_url="https://yabl.xyz/api/bot/{self.bot_id}/stats",
                 api_token=self.botlist_data["yabl"],
                 json={"guildCount": self.servers},
             )
