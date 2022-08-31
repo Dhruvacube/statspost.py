@@ -44,7 +44,27 @@ SUPPORTED_BOTLISTS = Literal[
 """Type hint for the supported Botlists"""
 
 VALID_BOTLISTS: Iterable = get_args(SUPPORTED_BOTLISTS)
-"""List of Botlists supported"""
+"""List of Botlists supported
+
+    - topgg
+    - discordbotlist
+    - bladelist
+    - discordbotsgg
+    - discordlabs
+    - discord-botlist.eu
+    - yabl
+    - voidbots
+    - radarbotdirectory
+    - blist
+    - botlist.me
+    - discords
+    - infinity
+    - motiondevelopment
+    - discordservices
+    - vcodes
+    - discordz
+    - disforge
+"""
 
 
 @final
