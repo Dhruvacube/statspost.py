@@ -65,7 +65,7 @@ setup(
     author="Dhruva Shaw",
     url="https://github.com/Dhruvacube/statspost.py",
     project_urls={
-        "Documentation": "https://bluedocs.page/fluxpoint-api",
+        "Documentation": "https://statspost.dhruvashaw.me",
         "Issue tracker": "https://github.com/Dhruvacube/statspost.py/issues",
     },
     version=version,

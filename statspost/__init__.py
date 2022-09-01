@@ -2,7 +2,7 @@ __title__ = "statspost"
 __author__ = "Dhruva Shaw"
 __license__ = "MIT"
 __copyright__ = "Copyright 2022-present Dhruvacube"
-__version__ = "1.0.0a"
+__version__ = "1.0.1"
 __path__ = __import__("pkgutil").extend_path(__path__, __name__)
 
 from typing import NamedTuple, Literal
@@ -24,7 +24,7 @@ class VersionInfo(NamedTuple):
 
 
 version_info: VersionInfo = VersionInfo(
-    major=1, minor=0, micro=0, releaselevel="alpha", serial=0
+    major=1, minor=0, micro=1, releaselevel="final", serial=0
 )
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
