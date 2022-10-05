@@ -11,7 +11,7 @@ statspost.py
    :target: https://pypi.python.org/pypi/statspost.py
    :alt: PyPI supported Python versions
 
-A python pakage to post the stats to some known botlists.
+A python package to post the stats to some known botlists.
 
 Key Features
 --------------
